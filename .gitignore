@@ -1,0 +1,14 @@
+# 依存とビルド成果物
+node_modules
+dist
+src-tauri/target
+src-tauri/gen
+
+# 環境・エディタ
+.env
+.env.*
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea

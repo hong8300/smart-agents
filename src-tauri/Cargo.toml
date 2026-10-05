@@ -1,0 +1,26 @@
+[package]
+name = "smart-agents"
+version = "0.1.0"
+description = "Claude / agy / codex とグループチャットするアプリ"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/hong8300/smart-agents"
+
+[lib]
+name = "smart_agents_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.7.1", features = [] }
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+tauri = { version = "2.12.1", features = ["protocol-asset"] }
+tauri-plugin-dialog = "2.8.1"
+tauri-plugin-opener = "2.7.0"
+tokio = { version = "1.53.2", features = ["process", "io-util", "time", "rt", "macros", "sync"] }
+which = "8.0.6"
+
+[target."cfg(unix)".dependencies]
+libc = "0.2.190"
