@@ -126,12 +126,16 @@ async function runConversation(chatId: string) {
       const remaining = max - turns;
       st().setRunning(chatId, { turn: turns, max });
 
-      // 同時に話し始めるときも「入力中」が少しずつずれて出るようにする
+      // 同時に話し始めるときも「入力中」が少しずつずれて出るようにする。
+      // ターン数は 1 人の返事が終わるたびに増やす（全員分を待たない）
       const results = await Promise.all(
-        speakers.map((k, i) => runTurn(chatId, k, ctl, remaining, { imageRound, delay: i * 450 })),
+        speakers.map((k, i) =>
+          runTurn(chatId, k, ctl, remaining, { imageRound, delay: i * 450 }).finally(() => {
+            turns += 1;
+            st().setRunning(chatId, { turn: turns, max });
+          }),
+        ),
       );
-      turns += speakers.length;
-      st().setRunning(chatId, { turn: turns, max });
       if (ctl.stopped) break;
 
       results.forEach((r, i) => {
